@@ -1,0 +1,225 @@
+#%RAML 1.0
+title: Sakila System API
+version: v1
+baseUri: http://api.evermind.com/sakila-sys/{version}
+mediaType: application/json
+protocols: [ HTTPS ]
+
+documentation:
+  
+  - title: Introdução
+    content: |
+      A Sakila System API fornece acesso a informações de filmes, atores e clientes, com base no banco de dados Sakila do MySQL. 
+      É possível realizar operações de consulta, criação, atualização e remoção através de uma interface REST.
+
+  - title: Autenticação
+    content: |
+      Esta API exige autenticação via Client ID Enforcement. Todas as requisições devem conter os seguintes headers:
+
+        client_id: seu-client-id
+        client_secret: seu-client-secret
+
+  - title: Formato das Respostas
+    content: |
+      Todas as respostas são no formato application/json.
+      Em caso de erro, a estrutura retornada inclui os campos "error" e "code".
+
+      Exemplo:
+      {
+        "error": "Recurso não encontrado",
+        "code": 404
+      }
+
+  - title: Paginação e Filtros
+    content: |
+      Para endpoints que retornam listas, é possível utilizar parâmetros como:
+      
+      - `limit`: número máximo de itens
+      - `offset`: posição inicial dos resultados
+      - `title`, `first_name`, `last_name`: filtros específicos por nome
+
+      Exemplo:
+        GET /films?limit=10&offset=0&title=academy
+
+  - title: Boas Práticas
+    content: |
+      - Sempre envie os headers de autenticação.
+      - Utilize filtros e paginação sempre que possível.
+      - Trate os códigos de resposta corretamente:
+        - 200: Sucesso
+        - 201: Criado
+        - 400: Requisição inválida
+        - 404: Não encontrado
+        - 500: Erro interno
+
+  - title: Recursos
+    content: |
+      - /films: Gerenciamento de filmes
+      - /customers: Gerenciamento de clientes
+      - /actors: Gerenciamento de atores
+
+
+traits:
+  client-id-required: !include traits/client-id-required.raml
+  errorResponses: !include traits/errorResponses.raml
+
+types:
+  Film: !include dataTypes/filmType.raml
+  Actor: !include dataTypes/actorType.raml
+  Customer: !include dataTypes/customerType.raml
+
+/films:
+
+  get:
+    description: Retorna todos os filmes
+    is: [errorResponses, client-id-required]
+    responses:
+      200:
+        body:
+          application/json:
+            type: Film[]
+            example: !include examples/film-array-example.raml
+  post:
+    description: Cria um novo filme
+    is: [errorResponses, client-id-required]
+    body:
+      application/json:
+        type: Film
+        example: !include examples/film-example.raml
+    responses:
+      201:
+        body:
+          application/json:
+            type: Film
+
+  /{filmId}:
+    uriParameters:
+      filmId:
+        type: integer
+        required: true
+    get:
+      description: Retorna um filme por ID
+      is: [errorResponses, client-id-required]
+      responses:
+        200:
+          body:
+            application/json:
+              type: Film
+    put:
+      description: Atualiza um filme existente
+      is: [errorResponses, client-id-required]
+      body:
+        application/json:
+          type: Film
+      responses:
+        200:
+          body:
+            application/json:
+              type: Film
+    delete:
+      description: Remove um filme
+      is: [errorResponses, client-id-required]
+      responses:
+        204:
+          description: Filme removido com sucesso
+
+/customers:
+  get:
+    description: Retorna todos os clientes
+    is: [errorResponses, client-id-required]
+    responses:
+      200:
+        body:
+          application/json:
+            type: Customer[]
+            example: !include examples/customer-array-example.raml
+
+  post:
+    description: Cria um novo Cliente
+    is: [errorResponses, client-id-required]
+    body:
+      application/json:
+        type: Customer
+        example: !include examples/customer-example.raml
+
+
+  /{customerId}:
+    uriParameters:
+      customerId:
+        type: integer
+        required: true
+    get:
+      description: Retorna um cliente por ID
+      is: [errorResponses, client-id-required]
+      responses:
+        200:
+          body:
+            application/json:
+              type: Customer
+    put:
+      description: Atualiza um cliente existente
+      is: [errorResponses, client-id-required]
+      body:
+        application/json:
+          type: Customer
+      responses:
+        200:
+          body:
+            application/json:
+              type: Customer
+    delete:
+      description: Remove um cliente
+      is: [errorResponses, client-id-required]
+      responses:
+        204:
+          description: Filme removido com sucesso
+
+/actors:
+  get:
+    description: Retorna vários atores
+    is: [errorResponses, client-id-required]
+    responses:
+      200:
+        body:
+          application/json:
+            type: Actor[]
+            example: !include examples/actor-array-example.raml
+
+  post:
+    description: Cria um Ator
+    is: [errorResponses, client-id-required]
+    body:
+      application/json:
+        type: Actor
+        example: !include examples/actor-example.raml
+
+  /{actorId}:
+    uriParameters:
+      actorId:
+        type: integer
+        required: true
+    get:
+      description: Retorna um ator por ID
+      is: [errorResponses, client-id-required]
+      responses:
+        200:
+          body:
+            application/json:
+              type: Actor
+    put:
+      description: Atualiza um ator existente
+      is: [errorResponses, client-id-required]
+      body:
+        application/json:
+          type: Actor
+      responses:
+        200:
+          body:
+            application/json:
+              type: Actor
+    delete:
+      description: Exclui um ator
+      is: [errorResponses, client-id-required]
+      responses:
+        204:
+          description: Ator removido com sucesso
