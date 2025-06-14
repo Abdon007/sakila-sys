@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="delete-actors" doc:id="9646ac0f-8cf2-47b4-8a46-c57ec5c600eb" >
+		<logger level="INFO" doc:name="Logger" doc:id="54d3b62a-804d-4dfb-a38f-152083508d53" message='#["[Delete Actor - Initial Proceess] -- &gt;" ++ vars.actorId ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+		<db:delete doc:name="Delete" doc:id="702f3f29-be13-4842-b154-02082cffd666" config-ref="Database_Config">
+			<db:sql ><![CDATA[DELETE FROM actor WHERE actor_id = :id;
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: vars.actorId
+}]]]></db:input-parameters>
+		</db:delete>
+		<set-payload value='#[output application/json&#10;---&#10;{&#10;	Message: "Actor deleted with success!",&#10;}]' doc:name="Set Payload" doc:id="526a0e04-44f1-4fdb-99f5-25cfb0885e19" />
+		<logger level="INFO" doc:name="Logger" doc:id="1496a59b-78ab-44e2-b9f5-8e21a768ca3e" message='#["[Delete Actor - Initial Process] -- &gt;" ++ vars.actorId ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+		<error-handler>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6445ce5d-ce7b-46d6-8013-2556eb5b06c8" >
+				<set-payload value="#[error.description]" doc:name="error.description" doc:id="da59eb15-5333-4c1f-9f72-ebcf7dc7baa6" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="delete-films" doc:id="64c21720-2f58-403c-a720-419d636069c4" >
+		<logger level="INFO" doc:name="Logger" doc:id="80dba56b-2392-483d-bec4-bb4391446292" message='#["[Delete films - Initial Proceess] -- &gt;" ++ vars.filmId ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+		<db:delete doc:name="Delete" doc:id="0501a5e4-f4b4-406b-a6a5-041f67a5c789" config-ref="Database_Config">
+			<db:sql ><![CDATA[DELETE FROM film WHERE film_id = :id;
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: vars.filmId
+}]]]></db:input-parameters>
+		</db:delete>
+		<set-payload value='#[output application/json&#10;---&#10;{&#10;	Message: "Film deleted with success!",&#10;}]' doc:name="Set Payload" doc:id="b67cf6a5-bd0f-4366-9b9c-2e0424496c0f" />
+		<logger level="INFO" doc:name="Logger" doc:id="52793fc5-cb7d-4ef1-bab8-b335f8baa392" message='#["[Delete Actor - Initial Process] -- &gt;" ++ vars.filmId ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ab6bc695-087e-4913-8603-a4bd9789d92b" >
+				<set-payload value="#[error.description]" doc:name="error.description" doc:id="a2dd712c-946c-4add-a90f-87dd512c2ffb" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="delete-customers" doc:id="339ba20c-b3d1-4ddd-83db-02a25264bd6c" >
+		<logger level="INFO" doc:name="Logger" doc:id="d711a13a-faa0-45e3-b5d7-289eb0aa9af2" message='#["[Delete customers - Initial Proceess] -- &gt;" ++ vars.customerId ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+		<db:delete doc:name="Delete" doc:id="dbef4480-5399-4b7b-af68-9fab45a0229a" config-ref="Database_Config">
+			<db:sql ><![CDATA[DELETE FROM customer WHERE customer_id = :id;
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: vars.customerId
+}]]]></db:input-parameters>
+		</db:delete>
+		<set-payload value='#[output application/json&#10;---&#10;{&#10;	Message: "Customer deleted with success!",&#10;}]' doc:name="Set Payload" doc:id="df9c7556-fde8-4b1b-95e8-5021e21e989e" />
+		<logger level="INFO" doc:name="Logger" doc:id="0608750a-2442-4fd0-ba58-2141a86dede0" message='#["[Delete customer - Final Proceess] -- &gt;" ++ vars.customerId ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="fcaf0ee7-2c90-4d78-9a98-431a2595c0f4" >
+				<set-payload value="#[error.description]" doc:name="error.description" doc:id="6dff3835-dc97-41b5-b374-9b0e5dcf7682" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

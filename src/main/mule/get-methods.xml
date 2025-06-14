@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="get-actors" doc:id="480c1daa-e9ab-41c9-b70f-82ee3c4a34ee" >
+		<db:select doc:name="Select" doc:id="2a68229f-0756-451b-a7b9-61f4dc38809b" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT 
+  actor_id,
+  first_name,
+  last_name,
+  last_update
+FROM actor;
+]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="81e3883a-9ea0-434d-b42e-173630fad812" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="get-films" doc:id="69d62363-41ef-4fc7-ad1a-be49729d58f6" >
+		<db:select doc:name="Select" doc:id="9801a1ee-f63b-49e4-9e7c-58ff7080e22b" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT 
+  film_id,
+  title,
+  description,
+  release_year,
+  language_id,
+  original_language_id,
+  rental_duration,
+  rental_rate,
+  length,
+  replacement_cost,
+  rating,
+  special_features,
+  last_update
+FROM film;
+]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="8caf3348-914b-43a5-9d9a-d2f440923899" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="get-actor" doc:id="4cb07a7f-8193-487f-8ba5-1289626a925a" >
+		<db:select doc:name="Select" doc:id="e7da11f7-6773-4334-97d2-8e2446f1242e" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT 
+  actor_id,
+  first_name,
+  last_name,
+  last_update
+FROM actor
+WHERE actor_id = :id;
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: vars.actorId
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="efdb9897-30c5-4857-b688-f50381637442" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="get-film" doc:id="0ee634b9-421b-43a3-9623-968545141a53" >
+		<db:select doc:name="Select" doc:id="35dc27e4-eddc-44f2-b15a-d758b7360228" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT 
+  film_id,
+  title,
+  description,
+  release_year,
+  language_id,
+  original_language_id,
+  rental_duration,
+  rental_rate,
+  length,
+  replacement_cost,
+  rating,
+  special_features,
+  last_update
+FROM film
+WHERE film_id = :id;
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: vars.filmId
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="0bd52122-61f8-4cd3-9dc6-f23499e79f09" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="get-customer" doc:id="1ef7d12f-e60e-4056-acf4-4d73b7718ea4" >
+		<db:select doc:name="Select" doc:id="bdeadfed-759f-4de9-8dc3-5ac8749cf68a" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT 
+  customer_id,
+  store_id,
+  first_name,
+  last_name,
+  email,
+  address_id,
+  active,
+  create_date,
+  last_update
+FROM customer
+WHERE customer_id = :id;
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: vars.customerId
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="2619f679-9983-47af-8090-39b1bc87e445" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="get-customers" doc:id="d59247c2-54c6-4bec-821a-4a1f73267f04" >
+		<db:select doc:name="Select" doc:id="80012bf7-a1b7-4bc0-830b-dc518a9e060b" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT 
+  customer_id,
+  store_id,
+  first_name,
+  last_name,
+  email,
+  address_id,
+  active,
+  create_date,
+  last_update
+FROM customer;
+]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="434e7b16-a844-4ff3-b49f-5c528eee7e9c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

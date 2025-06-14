@@ -120,8 +120,9 @@ types:
       description: Remove um filme
       is: [errorResponses, client-id-required]
       responses:
-        204:
-          description: Filme removido com sucesso
+        200:
+          body:
+            application/json:
 
 /customers:
   get:
@@ -155,7 +156,7 @@ types:
         200:
           body:
             application/json:
-              type: Customer
+              
     put:
       description: Atualiza um cliente existente
       is: [errorResponses, client-id-required]
@@ -171,8 +172,10 @@ types:
       description: Remove um cliente
       is: [errorResponses, client-id-required]
       responses:
-        204:
-          description: Filme removido com sucesso
+        200:
+          body:
+            application/json:
+              type: Customer
 
 /actors:
   get:
@@ -221,5 +224,7 @@ types:
       description: Exclui um ator
       is: [errorResponses, client-id-required]
       responses:
-        204:
-          description: Ator removido com sucesso
+        200:
+          body:
+            application/json:
+              
