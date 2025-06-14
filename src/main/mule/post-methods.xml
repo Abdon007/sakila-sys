@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="create-actor" doc:id="5c979e80-cdf0-43b9-8aac-6dd04ef1e1e8" >
+		<logger level="INFO" doc:name="Logger" doc:id="0c71de74-51a9-4405-b5fd-ca89ba6d642f" message='#["[Creating Actor - Initial Process]" ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+		<db:insert doc:name="Insert" doc:id="d695ad7c-bf8d-4851-81dc-bf65d7efccc9" config-ref="Database_Config">
+			<db:sql ><![CDATA[INSERT INTO actor (
+  first_name,
+  last_name,
+  last_update
+) VALUES (
+  :first_name,
+  :last_name,
+  CURRENT_TIMESTAMP
+);
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	first_name: payload.first_name,
+	last_name: payload.last_name,
+}]]]></db:input-parameters>
+		</db:insert>
+		<set-payload value='#[output application/json&#10;---&#10;{&#10;	Message: "Actor Created with success!",&#10;}]' doc:name="Set Payload" doc:id="c2d5dfbf-4229-460f-8048-704fbb1ca1cd" />
+		<logger level="INFO" doc:name="Logger" doc:id="063ac55e-3c04-4d7b-8f04-cd787b033de2" message='#["[Creating Actor - Final Process]" ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+	</flow>
+	<flow name="create-film" doc:id="1f161800-a041-454f-b563-317196ad8aed" >
+		<logger level="INFO" doc:name="Logger" doc:id="702db672-5156-4718-be2f-772cf5161fc9" message='#["[Creating Film - Initial Process]" ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+		<db:insert doc:name="Insert" doc:id="5381ef9c-2e74-4f20-9da3-0d7b2ba9d0f2" config-ref="Database_Config">
+			<db:sql ><![CDATA[INSERT INTO film (
+  title,
+  description,
+  release_year,
+  language_id,
+  rental_duration,
+  rental_rate,
+  length,
+  replacement_cost,
+  rating,
+  special_features,
+  last_update
+) VALUES (
+  :title,
+  :description,
+  :release_year,
+  :language_id,
+  :rental_duration,
+  :rental_rate,
+  :length,
+  :replacement_cost,
+  :rating,
+  :special_features,
+  CURRENT_TIMESTAMP
+);
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	title: payload.title,
+  	description: payload.description ,
+  	release_year: payload.release_year,
+  	language_id: payload.language_id,
+  	rental_duration: payload.rental_duration,
+  	rental_rate: payload.rental_rate,
+  	length: payload.length,
+  	replacement_cost: payload.replacement_cost,
+  	rating: payload.rating,
+  	special_features: payload.special_features joinBy ","
+}]]]></db:input-parameters>
+		</db:insert>
+		<set-payload value='#[output application/json&#10;---&#10;{&#10;	Message: "Film Created with success!",&#10;	date: now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}&#10;}]' doc:name="Set Payload" doc:id="0f9accb1-e561-4c60-800c-af386a3ac1b9" />
+		<logger level="INFO" doc:name="Logger" doc:id="59faf643-5273-4014-80a2-340456b0fdde" message='#["[Creating Film - Final Process]" ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+	</flow>
+	<flow name="create-customer" doc:id="fa1da012-a5b6-4af0-ba96-d2f0bb6989db" >
+		<logger level="INFO" doc:name="Logger" doc:id="6c56553b-f7b6-40ea-b211-bb8f64bac7c7" message='#["[Creating Customer - Initial Process]" ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+		<db:insert doc:name="Insert" doc:id="4a45992b-5164-4648-a926-2e41a3bc1c26" config-ref="Database_Config">
+			<db:sql ><![CDATA[INSERT INTO customer (
+  store_id,
+  first_name,
+  last_name,
+  email,
+  address_id,
+  active,
+  create_date,
+  last_update
+) VALUES (
+  :store_id,
+  :first_name,
+  :last_name,
+  :email,
+  :address_id,
+  :active,
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP
+);
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	store_id: payload.store_id ,
+  	first_name: payload.first_name ,
+  	last_name: payload.last_name,
+  	email: payload.email,
+  	address_id: payload.address_id,
+  	active: payload.active
+}]]]></db:input-parameters>
+		</db:insert>
+		<set-payload value='#[output application/json&#10;---&#10;{&#10;	Message: "Customer Created with success!",&#10;	date: now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}&#10;}]' doc:name="Set Payload" doc:id="c0c1329a-1b6c-4159-afb7-4cda448159b6" />
+		<logger level="INFO" doc:name="Logger" doc:id="bb68e2a4-401a-47b8-ab5f-69333ca2b07f" message='#["[Creating Customer - Initial Process]" ++ now() as DateTime {format: "dd/MM/yyyy HH:mm:ss"}]'/>
+	</flow>
+</mule>

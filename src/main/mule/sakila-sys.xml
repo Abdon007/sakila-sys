@@ -129,44 +129,12 @@ output application/json
                 <ee:set-variable variableName="actorId">attributes.uriParams.'actorId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  actor_id: 5,
-  first_name: "JOHNNY",
-  last_name: "CAGE",
-  last_update: "2023-10-15T12:45:00Z"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
     </flow>
     <flow name="put:\customers\(customerId):application\json:sakila-sys-config">
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="customerId">attributes.uriParams.'customerId'</ee:set-variable>
             </ee:variables>
-        </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  customer_id: 100,
-  store_id: 1,
-  first_name: "SANDRA",
-  last_name: "KILMER",
-  email: "sandra.kilmer@example.com",
-  address_id: 42,
-  activebool: true,
-  create_date: "2023-01-15",
-  last_update: "2023-10-15T11:30:00Z",
-  active: 1
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
         </ee:transform>
     </flow>
     <flow name="put:\films\(filmId):application\json:sakila-sys-config">
@@ -175,31 +143,6 @@ output application/json
                 <ee:set-variable variableName="filmId">attributes.uriParams.'filmId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  film_id: 1,
-  title: "ACADEMY DINOSAUR",
-  description: "A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies",
-  release_year: 2006,
-  language_id: 1,
-  original_language_id: 1,
-  rental_duration: 6,
-  rental_rate: 0.99,
-  length: 86,
-  replacement_cost: 20.99,
-  rating: "PG",
-  special_features: [
-    "Deleted Scenes", 
-    "Behind the Scenes"
-  ],
-  last_update: "2023-10-15T10:23:54Z"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
     </flow>
     <flow name="delete:\actors\(actorId):sakila-sys-config">
         <ee:transform doc:name="Transform Message">
@@ -207,19 +150,7 @@ output application/json
                 <ee:set-variable variableName="actorId">attributes.uriParams.'actorId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  timestamp: "2025-05-22T14:32:00Z",
-  status: 404,
-  error: "Not Found",
-  message: "Cidade com ID 999 não encontrada"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="delete-actors" doc:id="94bebcaa-b058-4703-b94d-a9dba2ac4fc7" name="delete-actors" />
     </flow>
     <flow name="delete:\customers\(customerId):sakila-sys-config">
         <ee:transform doc:name="Transform Message">
@@ -227,19 +158,7 @@ output application/json
                 <ee:set-variable variableName="customerId">attributes.uriParams.'customerId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  timestamp: "2025-05-22T14:32:00Z",
-  status: 404,
-  error: "Not Found",
-  message: "Cidade com ID 999 não encontrada"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="delete-customers" doc:id="c60e5e30-d662-4ca3-8890-8a04be97fb46" name="delete-customers" />
     </flow>
     <flow name="delete:\films\(filmId):sakila-sys-config">
         <ee:transform doc:name="Transform Message">
@@ -247,222 +166,72 @@ output application/json
                 <ee:set-variable variableName="filmId">attributes.uriParams.'filmId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  timestamp: "2025-05-22T14:32:00Z",
-  status: 404,
-  error: "Not Found",
-  message: "Cidade com ID 999 não encontrada"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="delete-films" doc:id="b10700db-f714-4330-b36e-b52d6214b7ec" name="delete-films" />
     </flow>
     <flow name="get:\actors:sakila-sys-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    actor_id: 5,
-    first_name: "JOHNNY",
-    last_name: "CAGE",
-    last_update: "2023-10-15T12:45:00Z"
-  }
-] as Array {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="get-actors" doc:id="76a62ac3-fb87-428c-995e-0a03d9d9ea9f" name="get-actors" />
     </flow>
     <flow name="get:\customers:sakila-sys-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    customer_id: 100,
-    store_id: 1,
-    first_name: "SANDRA",
-    last_name: "KILMER",
-    email: "sandra.kilmer@example.com",
-    address_id: 42,
-    activebool: true,
-    create_date: "2023-01-15",
-    last_update: "2023-10-15T11:30:00Z",
-    active: 1
-  }
-] as Array {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="get-customers" doc:id="83e7ed5f-1b14-4ecf-8219-7bb80ed2fe79" name="get-customers" />
     </flow>
     <flow name="get:\films:sakila-sys-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    film_id: 1,
-    title: "ACADEMY DINOSAUR",
-    description: "A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies",
-    release_year: 2006,
-    language_id: 1,
-    original_language_id: 1,
-    rental_duration: 6,
-    rental_rate: 0.99,
-    length: 86,
-    replacement_cost: 20.99,
-    rating: "PG",
-    special_features: [
-      "Deleted Scenes", 
-      "Behind the Scenes"
-    ],
-    last_update: "2023-10-15T10:23:54Z"
-  }
-] as Array {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="get-films" doc:id="7ca81edd-7ccd-4874-9b25-f7f44b19e07d" name="get-films" />
     </flow>
     <flow name="get:\actors\(actorId):sakila-sys-config">
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="actorId">
             <ee:variables>
-                <ee:set-variable variableName="actorId">attributes.uriParams.'actorId'</ee:set-variable>
+                <ee:set-variable variableName="actorId"><![CDATA[attributes.uriParams.'actorId']]></ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  actor_id: 5,
-  first_name: "JOHNNY",
-  last_name: "CAGE",
-  last_update: "2023-10-15T12:45:00Z"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="get-actor" doc:id="8c1115d0-76c5-40f7-921d-ff5f8dc9bdd8" name="get-actor" />
     </flow>
     <flow name="get:\customers\(customerId):sakila-sys-config">
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="customerId">
             <ee:variables>
-                <ee:set-variable variableName="customerId">attributes.uriParams.'customerId'</ee:set-variable>
+                <ee:set-variable variableName="customerId"><![CDATA[attributes.uriParams.'customerId']]></ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  customer_id: 100,
-  store_id: 1,
-  first_name: "SANDRA",
-  last_name: "KILMER",
-  email: "sandra.kilmer@example.com",
-  address_id: 42,
-  activebool: true,
-  create_date: "2023-01-15",
-  last_update: "2023-10-15T11:30:00Z",
-  active: 1
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="get-customer" doc:id="4295e78c-013a-4463-9e70-727abb5a40a6" name="get-customer" />
     </flow>
     <flow name="get:\films\(filmId):sakila-sys-config">
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="filmId">
             <ee:variables>
-                <ee:set-variable variableName="filmId">attributes.uriParams.'filmId'</ee:set-variable>
+                <ee:set-variable variableName="filmId"><![CDATA[attributes.uriParams.'filmId']]></ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  film_id: 1,
-  title: "ACADEMY DINOSAUR",
-  description: "A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies",
-  release_year: 2006,
-  language_id: 1,
-  original_language_id: 1,
-  rental_duration: 6,
-  rental_rate: 0.99,
-  length: 86,
-  replacement_cost: 20.99,
-  rating: "PG",
-  special_features: [
-    "Deleted Scenes", 
-    "Behind the Scenes"
-  ],
-  last_update: "2023-10-15T10:23:54Z"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="get-film" doc:id="8fd29c59-a909-40da-a488-e127cd873d18" name="get-film" />
     </flow>
     <flow name="post:\actors:application\json:sakila-sys-config">
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="payload" doc:id="251cb0f2-ef7a-41f4-b165-ce9d3a1d0660">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{
-  timestamp: "2025-05-22T14:32:00Z",
-  status: 404,
-  error: "Not Found",
-  message: "Cidade com ID 999 não encontrada"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+payload]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+        <flow-ref doc:name="create-actor" doc:id="5314ccca-d601-4a47-b049-a791b398f94f" name="create-actor" />
     </flow>
     <flow name="post:\customers:application\json:sakila-sys-config">
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{
-  timestamp: "2025-05-22T14:32:00Z",
-  status: 404,
-  error: "Not Found",
-  message: "Cidade com ID 999 não encontrada"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+payload]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+        <flow-ref doc:name="create-customer" doc:id="6308d0a3-4e89-44c2-9f8d-ecc60b37fa36" name="create-customer" />
     </flow>
     <flow name="post:\films:application\json:sakila-sys-config">
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{
-  film_id: 1,
-  title: "ACADEMY DINOSAUR",
-  description: "A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies",
-  release_year: 2006,
-  language_id: 1,
-  original_language_id: 1,
-  rental_duration: 6,
-  rental_rate: 0.99,
-  length: 86,
-  replacement_cost: 20.99,
-  rating: "PG",
-  special_features: [
-    "Deleted Scenes", 
-    "Behind the Scenes"
-  ],
-  last_update: "2023-10-15T10:23:54Z"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+payload]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+        <flow-ref doc:name="create-film" doc:id="6bfb892b-ce5b-449d-acfb-d60341a7c0cc" name="create-film" />
     </flow>
 </mule>
